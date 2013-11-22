@@ -67,7 +67,8 @@
     self.scrubberIsEnabled = NIIsPad();
 
     // Allow the photos to display beneath the status bar.
-    self.wantsFullScreenLayout = YES;
+    //self.wantsFullScreenLayout = YES; // deprecated
+    self.edgesForExtendedLayout = UIRectEdgeNone;
   }
   return self;
 }
@@ -217,10 +218,7 @@
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
 
-  [[UIApplication sharedApplication] setStatusBarStyle: (NIIsPad()
-                                                         ? UIStatusBarStyleBlackOpaque
-                                                         : UIStatusBarStyleBlackTranslucent)
-                                              animated: animated];
+  [[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleLightContent animated: animated];
 
   UINavigationBar* navBar = self.navigationController.navigationBar;
   navBar.barStyle = UIBarStyleBlack;

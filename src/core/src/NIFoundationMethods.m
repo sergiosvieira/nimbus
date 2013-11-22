@@ -81,26 +81,31 @@ CGRect NIFrameOfCenteredViewWithinView(UIView* viewToCenter, UIView* containerVi
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 CGSize NISizeOfStringWithLabelProperties(NSString *string, CGSize constrainedToSize, UIFont *font, NSLineBreakMode lineBreakMode, NSInteger numberOfLines) {
-  if (string.length == 0) {
-    return CGSizeZero;
-  }
-
-  CGFloat lineHeight = font.lineHeight;
-  CGSize size = CGSizeZero;
-
-  if (numberOfLines == 1) {
-    size = [string sizeWithFont:font forWidth:constrainedToSize.width lineBreakMode:lineBreakMode];
-
-  } else {
-    size = [string sizeWithFont:font constrainedToSize:constrainedToSize lineBreakMode:lineBreakMode];
-    if (numberOfLines > 0) {
-      size.height = MIN(size.height, numberOfLines * lineHeight);
+    if (string.length == 0)
+    {
+        return CGSizeZero;
     }
-  }
 
-  return size;
+    CGFloat lineHeight = font.lineHeight;
+    CGSize size = CGSizeZero;
+    NSDictionary * fontAttributes = [NSDictionary dictionaryWithObject:font forKey: NSFontAttributeName];
+
+    if (numberOfLines == 1)
+    {
+        size = [string boundingRectWithSize:constrainedToSize options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+            attributes:fontAttributes context:nil].size;
+    } else {
+        size = [string boundingRectWithSize:constrainedToSize options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+            attributes:fontAttributes context:nil].size;
+        
+        if (numberOfLines > 0)
+        {
+            size.height = MIN(size.height, numberOfLines * lineHeight);
+        }
+    }
+
+    return size;
 }
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
